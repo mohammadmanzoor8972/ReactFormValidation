@@ -1,2 +1,0 @@
-# ReactFormValidation
-Created with CodeSandbox
