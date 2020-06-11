@@ -25,18 +25,66 @@ class LoginForm extends React.Component {
     };
   }
 
+  onChangeHandler = event => {
+    const { name, value } = event.target;
+
+    let errors = this.state.errors;
+    switch (name) {
+      case "username":
+        errors.username = value.length < 5 ? "User name must 5 character" : "";
+        break;
+      case "password":
+        errors.password = value.length < 7 ? "Password must 6 character" : "";
+        break;
+      default:
+        break;
+    }
+
+    this.setState({ errors, [name]: value });
+  };
+
+  validateForm = errors => {
+    let valid = true;
+    Object.values(errors).forEach(val => val.length > 0 && (valid = false));
+    return valid;
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    if (this.validateForm(this.state.errors)) {
+      alert("Valid form!");
+    } else {
+      alert("Invalid form!");
+    }
+  };
+
   render() {
     const { username, password, isRemember } = this.state;
     return (
-      <form>
+      <form onSubmit={this.handleSubmit}>
         <div>
           <label for="username">Username</label>
-          <input type="text" name="username" id="username" />
+          <input
+            type="text"
+            name="username"
+            id="username"
+            value={username}
+            onChange={this.onChangeHandler}
+          />
+          <span>{this.state.errors.username}</span>
         </div>
         <div>
           <label for="password">Password</label>
-          <input type="text" name="password" id="password" />
+          <input
+            type="password"
+            name="password"
+            id="password"
+            value={password}
+            onChange={this.onChangeHandler}
+          />
+          <span>{this.state.errors.password}</span>
         </div>
+        <button type="submit">Login</button>
       </form>
     );
   }
