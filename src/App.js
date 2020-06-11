@@ -14,6 +14,7 @@ export default function App() {
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+    this.form = React.createRef();
     this.state = {
       username: "",
       password: "",
@@ -52,6 +53,8 @@ class LoginForm extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     if (this.validateForm(this.state.errors)) {
+      this.form.current.reset();
+      console.dir(this.form);
       alert("Valid form!");
     } else {
       alert("Invalid form!");
@@ -61,9 +64,9 @@ class LoginForm extends React.Component {
   render() {
     const { username, password, isRemember } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} ref={this.form}>
         <div>
-          <label for="username">Username</label>
+          <label htmlFor="username">Username</label>
           <input
             type="text"
             name="username"
@@ -74,7 +77,7 @@ class LoginForm extends React.Component {
           <span>{this.state.errors.username}</span>
         </div>
         <div>
-          <label for="password">Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             name="password"
@@ -84,7 +87,19 @@ class LoginForm extends React.Component {
           />
           <span>{this.state.errors.password}</span>
         </div>
+        <div>
+          <input
+            id="isRemember"
+            onChange={this.onChangeHandler}
+            value={isRemember}
+            name="isRemember"
+            type="checkbox"
+          />
+          <label htmlFor="isRemember">Remember Me</label>
+        </div>
+
         <button type="submit">Login</button>
+        <pre>{JSON.stringify(this.state)}</pre>
       </form>
     );
   }
